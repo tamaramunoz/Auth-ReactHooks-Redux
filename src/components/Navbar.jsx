@@ -25,6 +25,7 @@ const Navbar = (props) => {
                     active ? (
                         <>
                             <NavLink className="btn btn-dark mr-2" exact to="/" >Home</NavLink>
+                            <NavLink className="btn btn-dark mr-2" exact to="/profile" >Perfil</NavLink>
                             <button
                                 className="btn btn-dark"
                                 onClick={() => cerrarSesion()}

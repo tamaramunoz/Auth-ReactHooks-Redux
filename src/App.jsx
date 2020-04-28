@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Home from './components/Home'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
+import Profile from './components/Profile'
 
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
@@ -45,6 +46,7 @@ function App() {
 
         <Switch>
           <RutaPrivada component={Home} exact path="/" />
+          <RutaPrivada component={Profile}  path="/profile" />
           <Route component={Login} path="/login" />
         </Switch>
 
