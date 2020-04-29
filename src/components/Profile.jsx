@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { actualizarUsuarioAccion } from '../redux/userDucks'
+import { actualizarUsuarioAccion, editarFotoAccion } from '../redux/userDucks'
 
 const Profile = () => {
 
@@ -10,6 +10,7 @@ const Profile = () => {
 
     const [nombreUsuario, setNombreUsuario] = useState(usuario.displayName)
     const [activarFormulario, setActivarFormulario] = useState(false)
+    const [error, setError] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -23,6 +24,22 @@ const Profile = () => {
         setActivarFormulario(false)
     }
 
+    const seleccionarArchivo = (imagen) => {
+        console.log(imagen.target.files[0]);
+        const imagenCliente = imagen.target.files[0]
+
+        if(imagenCliente === undefined){
+            console.log('no se seleccionó imagen');
+            return
+        }
+
+        if(imagenCliente.type === 'image/png' || imagenCliente.type === 'image/jpg' || imagenCliente.type === 'image/jpeg'){
+            dispatch(editarFotoAccion(imagenCliente))
+            setError(false)
+        }else{
+            setError(true)
+        }
+    }
 
     return (
         <div className="mt-5 text-center">
@@ -38,7 +55,37 @@ const Profile = () => {
                     <button className="btn btn-dark" onClick={() => setActivarFormulario(true)} >
                         Editar nombre
                     </button>
+                    {
+                        error && 
+                        <div className="alert alert-warning mt-2">
+                            Solos archivos .png, .jpg o .jpeg
+                        </div>
+                    }
+                    <div className="custom-file">
+                        <input 
+                            type="file" 
+                            className="custom-file-input"
+                            id="inputGroupFile01" 
+                            style={{display: 'none'}}
+                            onChange={e => seleccionarArchivo(e)}
+                            disabled={loading}
+                        />
+                        <label 
+                            className={loading ? 'btn btn-dark mt-2 disabled' : 'btn btn-dark mt-2'} 
+                            htmlFor="inputGroupFile01"
+                        >Choose File</label>
+                    </div>
                 </div>
+                {
+                    loading && 
+                    <div className="card-body">
+                        <div className="d-flex justify-content-center my-3">
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                }
                 {
                     activarFormulario &&
                     <div className="card-body">
